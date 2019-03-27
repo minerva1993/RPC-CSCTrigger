@@ -4,6 +4,10 @@ process = cms.Process("rpcNtupler")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.GlobalTag.globaltag = "93X_upgrade2023_realistic_v5"
+
 from RecoLocalMuon.RPCRecHit.rpcRecHits_cfi import rpcRecHits
 process.rpcRecHits = rpcRecHits
 

@@ -169,6 +169,9 @@ void
 CSCExtrapoltoRPC::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
  
+  edm::ESHandle<CSCGeometry> cscGeo;
+  iSetup.get<MuonGeometryRecord>().get(cscGeo);
+
   cout << "CSCDetId::minStationId(): " << CSCDetId::minStationId() << endl;
   cout << "CSCDetId::maxStationId(): " << CSCDetId::maxStationId() << endl;
 
@@ -250,17 +253,15 @@ CSCExtrapoltoRPC::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       CSCDetId idtemp(newEndcap,newStation,CSCTriggerNumbering::ringFromTriggerLabels(newStation,b_cscId),CSCTriggerNumbering::chamberFromTriggerLabels(newSector,b_CSCsubsector,newStation,b_cscId),0);
       cout << idtemp << endl;
 
-      int ring = CSCTriggerNumbering::ringFromTriggerLabels(newStation,b_cscId);
-      int chid =  CSCTriggerNumbering::chamberFromTriggerLabels(newSector,b_CSCsubsector,newStation,b_cscId);
+
+      int ring = CSCTriggerNumbering::ringFromTriggerLabels(newStation, b_cscId);
+      int chid = CSCTriggerNumbering::chamberFromTriggerLabels(newSector, b_CSCsubsector, newStation, b_cscId);
       const CSCDetId id(newEndcap, newStation, ring, chid, 0);
-//      const CSCChamber* cscChamber(geom->chamber(id));
-      const CSCGeometry* geom = nullptr; 
-      const CSCChamber* thechamber = nullptr;
-      thechamber = const_cast<const CSCChamber*>(geom->chamber(id));
-      if(thechamber) cout << "shit" << endl;
-//      const CSCLayer* keyLayer(cscChamber->layer(3));
-//      const CSCLayerGeometry* keyLayerGeometry(keyLayer->geometry());
-//      const LocalPoint lpCSC(keyLayerGeometry->topology()->localPosition(b_CSCstrip));
+      const CSCChamber* cscChamber = cscGeo->chamber(id);
+      const CSCLayer* keyLayer(cscChamber->layer(3));
+      const CSCLayerGeometry* keyLayerGeometry(keyLayer->geometry());
+      const LocalPoint lpCSC(keyLayerGeometry->topology()->localPosition(b_CSCstrip));
+      cout << "lp: " << lpCSC << endl;
 
       //to check forward and backward endcap
       if ( b_CSCendcap == 0 ) b_fNDigis++; 
