@@ -243,21 +243,19 @@ CSCExtrapoltoRPC::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
       cout << "I'm here in CSC:: endcap: " << b_CSCendcap << " station: " << b_CSCstation << " sector: " << b_CSCsector << " subsector: " << b_CSCsubsector << " strip: " << b_CSCstrip << " wire: " << b_CSCkeyWire << endl;
       cout << "I'm here in CSC:: endcap: " << csc_id.endcap() << " station: " << csc_id.station() << endl;
 
-      unsigned int newEndcap = (*csc).first.endcap();
-      unsigned int newStation = (*csc).first.station();
-      unsigned int newSector = (*csc).first.triggerSector();
-
       // debug
-      cout << CSCTriggerNumbering::ringFromTriggerLabels(newStation,b_cscId) << " "  << CSCTriggerNumbering::chamberFromTriggerLabels(newSector,b_CSCsubsector,newStation,b_cscId) << endl;
+//      unsigned int newEndcap = (*csc).first.endcap();
+//      unsigned int newStation = (*csc).first.station();
+//      unsigned int newSector = (*csc).first.triggerSector();
+//      cout << CSCTriggerNumbering::ringFromTriggerLabels(newStation,b_cscId) << " " 
+//            << CSCTriggerNumbering::chamberFromTriggerLabels(newSector,b_CSCsubsector,newStation,b_cscId) << endl;
 //      cout << (*csc).first.ring() << " " << (*csc).first.chamber() << endl;
-      CSCDetId idtemp(newEndcap,newStation,CSCTriggerNumbering::ringFromTriggerLabels(newStation,b_cscId),CSCTriggerNumbering::chamberFromTriggerLabels(newSector,b_CSCsubsector,newStation,b_cscId),0);
-      cout << idtemp << endl;
+//      int ring = CSCTriggerNumbering::ringFromTriggerLabels(newStation, b_cscId);
+//      int chid = CSCTriggerNumbering::chamberFromTriggerLabels(newSector, b_CSCsubsector, newStation, b_cscId);
+//      const CSCDetId id(newEndcap, newStation, ring, chid, 0);
+//      cout << id << endl;
 
-
-      int ring = CSCTriggerNumbering::ringFromTriggerLabels(newStation, b_cscId);
-      int chid = CSCTriggerNumbering::chamberFromTriggerLabels(newSector, b_CSCsubsector, newStation, b_cscId);
-      const CSCDetId id(newEndcap, newStation, ring, chid, 0);
-      const CSCChamber* cscChamber = cscGeo->chamber(id);
+      const CSCChamber* cscChamber = cscGeo->chamber(csc_id);
       const CSCLayer* keyLayer(cscChamber->layer(3));
       const CSCLayerGeometry* keyLayerGeometry(keyLayer->geometry());
       const LocalPoint lpCSC(keyLayerGeometry->topology()->localPosition(b_CSCstrip));
